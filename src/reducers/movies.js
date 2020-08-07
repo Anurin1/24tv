@@ -1,15 +1,18 @@
 const initialState = {
-
+  popularMovies: [],
+  popularSeries: [],
+  family: [],
+  documentary: [],
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
 
-    case "ADD_WINNER": {
+    case "SAVE_MOVIES": {
+      const { movies } = action;
       return {
         ...state,
-        isWinning: true,
-        shouldBoardMove: false,
+        popularMovies: movies,
       };
     }
     
@@ -20,8 +23,8 @@ export default function (state = initialState, action) {
 }
 
 // -- Selectors
-// export function getGameScore(state) {
-//   return state.game.score;
-// }
+export function getMovies(state) {
+  return state.movies.popularMovies;
+}
 
 

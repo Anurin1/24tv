@@ -17,6 +17,8 @@
 @import "./elements/placeholder";
 @import "./elements/text";
 
+@import "./elements/carousel";
+
 //! general rules:
 // -add default values
 // -have na main element vzdy class
@@ -39,18 +41,23 @@ body {
 }
 
 h1 {
-
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
 }
 
 h2 {
-
+  font-size: 1.5rem;
+  font-weight: 700;
+  // text-transform: uppercase;
 }
 
 .container {
   width: 100%;
   // display: flex;
-  padding: 3rem 2rem;
-  border: 1px solid #000;
+  padding: 4rem 4rem;
+  border: 1px solid rgb(250, 5, 5);
   // position: relative;
 }
 
@@ -73,7 +80,9 @@ h2 {
 }
 
 
-
+.img-movie {
+  cursor: pointer;
+}
 
 
 
