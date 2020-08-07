@@ -23,7 +23,7 @@ class Landing extends Component {
 
     return movies.map((movie, i) => {
       return (
-        <Link to="/movie/name-name">
+        <Link to={`/movie/${movie.urlTitle}`}>
           <img src={IMG_PATH + movie.poster_path} key={movie.original_title} className="img-movie"/>
         </Link>
       );

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import actions from "../actions";
 
-import { getMovies } from "../reducers/movies";
+import { getMovie } from "../reducers/movies";
 
 
 import Carousel from '@brainhubeu/react-carousel';
@@ -28,19 +28,39 @@ class Movie extends Component {
 
   render() {
     // console.log("Carousel -> render -> movies", movies)
+    // console.log("----", this.props);
+    
+    const { movie } = this.props;
+    console.log("Movie -> render -> movie", movie)
+
+    if (!movie) return;
+
+    const { title, overview, original_language } = movie;
 
     return (
-      <div>
-        ahoj
+      <div className="container-movie">
+        <h3>{title}</h3>
+        <p>{overview}</p>
+
+        <h4>Language</h4>
+        <span>{original_language}</span>
+
+        <Link to={`/wath/${movie.urlTitle}`}>
+          Watch video
+        </Link>
 
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  movies: getMovies(state),
-});
+const mapStateToProps = (state, ownProps) => {
+  const { movieName } = ownProps.match.params;
+
+  return {
+    movie: getMovie(state, movieName),
+  }
+};
 
 export default connect(mapStateToProps, {
   fetchMovies: actions.fetchMovies,

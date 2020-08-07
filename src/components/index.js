@@ -1,40 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Fragment } from "react";
+import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Category from "./Category";
+import Landing from "./Landing";
 import Movie from "./Movie";
+import Watch from "./Watch";
 // import Category from "./Category";
-
 
 // import Carousel from './Carousel';
 // import CarouselCopy from './CarouselCopy';
 
 export default () => {
   return (
-
     <Router>
-    <Fragment>
-      <Navbar />
-      <Switch>
-        <Route exact path="/" component={Landing} />
-        <Route path="/movie/:movieName" component={Movie} />
-      </Switch>
-    </Fragment>
-  </Router>
+      <Fragment>
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <Route path="/movie/:movieName" component={Movie} />
+          <Route path="/wath/:movieName" component={Watch} />
+        </Switch>
+      </Fragment>
+    </Router>
 
+    // <div className="container">
+    //   <h1>24tv</h1>
+    //   {/* <CarouselCopy />
+    //   <CarouselCopy /> */}
 
-    <div className="container">
-      <h1>24tv</h1>
-      {/* <CarouselCopy />
-      <CarouselCopy /> */}
+    //   <Category />
 
-      <Category />
+    // </div>
+  );
+};
 
-    </div>
-  )
+{
+  /* <Route path="/user/:userId" component={UserPage} /> */
 }
-
-
-
-<Route path="/user/:userId" component={UserPage} />
