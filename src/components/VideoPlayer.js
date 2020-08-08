@@ -14,9 +14,11 @@ import '@brainhubeu/react-carousel/lib/style.css';
 
 import api from "../utils/api"
 
+import { fetchVideoURL } from "../utils/video"
+
 const IMG_PATH = "https://image.tmdb.org/t/p/w154";
 
-class Watch extends Component {
+class VideoPlayer extends Component {
 
   // renderMovie() {
   //   return (
@@ -31,9 +33,9 @@ class Watch extends Component {
 
   componentDidMount() {
 
-    this.getVideoURL();
-    
-
+    this.setVideoURL();
+    // const { movie } = this.props;
+    // this.setState({url: getVideoURL(movie) })
 
    
 
@@ -41,25 +43,28 @@ class Watch extends Component {
   }
 
 
-  async getVideoURL() {
+  async setVideoURL() {
     const { movie } = this.props;
-    const res = await api.get(`${movie.id}/videos?api_key=24f236a5226844fd146103fb45ff24f2&language=en-US`);
-    console.log("Watch -> getVideoURL -> res", res)
+    const url = await fetchVideoURL(movie);
 
-    this.setState({url: res.data.results[0].key})
+    this.setState({url})
   }
 
 
   render() {
-    // console.log("Carousel -> render -> movies", movies)
+
+    const { movie } = this.props;
+    console.log("Carousel -> render -> movies->->->->->->");
     const {url} = this.state;
 
+    //!loading state
     if (!url) {
       return <div></div>;
     }
 
     return (
      <div>
+       <h3>{movie.title}</h3>
        <ReactPlayer url={`https://www.youtube.com/watch?v=${url}`}
         width={"100vw"}
         height={"100vh"}
@@ -73,15 +78,17 @@ class Watch extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { movieName } = ownProps.match.params;
+  const { movieName, category } = ownProps.match.params;
+  console.log("mapStateToProps -> movieName", ownProps.match.params)
 
   return {
-    movie: getMovie(state, movieName),
+    category,
+    movie: getMovie(state, category, movieName),
   }
 };
 
 export default connect(mapStateToProps, {
   getVideoURL: actions.getVideoURL,
-})(Watch);
+})(VideoPlayer);
 
 // export default Carousel;

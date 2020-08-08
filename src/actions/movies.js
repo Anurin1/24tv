@@ -1,27 +1,43 @@
-import api from "../utils/api"
+import api from "../utils/api";
+import config from "../config/config";
 
+import { addAlert } from "./alerts";
 
 export function fetchMovies(category) {
   return async dispatch => {
-    // dispatch({ type: "SET_LOADING" });
+    switch (category) {
+      case "popular":
+        try {
+          const res = await api.get(
+            `movie/popular?api_key=${config.movieKey}&language=${config.language}&page=1`
+          );
+          return dispatch(addMovies(res.data.results, category));
+        } catch (err) {
+          addAlert(err.message);
+        }
 
-    const res = await api.get(`/popular?api_key=24f236a5226844fd146103fb45ff24f2&language=en-US&page=1`);
-    console.log("fetchResults -> res", res)
-
-    dispatch({ type: "SAVE_MOVIES", movies: res.data.results });
-    // dispatch({ type: "REMOVE_LOADING" });
+      default:
+        return dispatch(addAlert("Something went wrong."));
+    }
   };
 }
 
-// export function fetchVideo(movieName) {
-//   return async dispatch => {
-//     // dispatch({ type: "SET_LOADING" });
+export function addMovies(movies, category) {
+  return async dispatch => {
+    dispatch({ type: "ADD_MOVIES", movies, category });
+  };
+}
 
-//     const res = await api.get(`/popular?api_key=24f236a5226844fd146103fb45ff24f2&language=en-US&page=1`);
-//     console.log("fetchResults -> res", res)
+export function fetchSearch(input) {
+  return async dispatch => {
+    try {
+      const res = await api.get(
+        `search/movie?api_key=${config.movieKey}&language=${config.language}&query=${input}&page=1&include_adult=${config.includeAdult}`
+      );
 
-//     dispatch({ type: "SAVE_MOVIES", movies: res.data.results });
-//     // dispatch({ type: "REMOVE_LOADING" });
-//   };
-// }
-
+      dispatch({ type: "ADD_SEARCH", movies: res.data.results });
+    } catch (err) {
+      addAlert(err.message);
+    }
+  };
+}

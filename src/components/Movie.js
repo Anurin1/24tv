@@ -14,9 +14,10 @@ import '@brainhubeu/react-carousel/lib/style.css';
 const IMG_PATH = "https://image.tmdb.org/t/p/w154";
 
 class Movie extends Component {
-  componentDidMount() {
-    this.props.fetchMovies();
-  }
+ 
+  // componentDidMount() {
+  //   this.props.fetchMovies();
+  // }
 
 
 
@@ -30,7 +31,8 @@ class Movie extends Component {
     // console.log("Carousel -> render -> movies", movies)
     // console.log("----", this.props);
     
-    const { movie } = this.props;
+    const { movie, category } = this.props;
+    // console.log("Movie -> render -> props", this.props)
     console.log("Movie -> render -> movie", movie)
 
     if (!movie) return;
@@ -45,7 +47,7 @@ class Movie extends Component {
         <h4>Language</h4>
         <span>{original_language}</span>
 
-        <Link to={`/wath/${movie.urlTitle}`}>
+        <Link to={`/movies/${category}/${movie.urlTitle}/watch`}>
           Watch video
         </Link>
 
@@ -55,15 +57,17 @@ class Movie extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { movieName } = ownProps.match.params;
+  const { movieName, category } = ownProps.match.params;
+  console.log("mapStateToProps -> movieName", ownProps.match.params)
 
   return {
-    movie: getMovie(state, movieName),
+    category,
+    movie: getMovie(state, category, movieName),
   }
 };
 
 export default connect(mapStateToProps, {
-  fetchMovies: actions.fetchMovies,
+  // fetchMovies: actions.fetchMovies,
 })(Movie);
 
 // export default Carousel;

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Landing from "./Landing";
 import Movie from "./Movie";
-import Watch from "./Watch";
+import VideoPlayer from "./VideoPlayer";
 // import Category from "./Category";
 
 // import Carousel from './Carousel';
@@ -16,8 +16,9 @@ export default () => {
       <Fragment>
         <Switch>
           <Route exact path="/" component={Landing} />
-          <Route path="/movie/:movieName" component={Movie} />
-          <Route path="/wath/:movieName" component={Watch} />
+          
+          <Route exact path="/movies/:category/:movieName" component={Movie} />
+          <Route exact path="/movies/:category/:movieName/watch" component={VideoPlayer} />
         </Switch>
       </Fragment>
     </Router>
