@@ -1,8 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
-import ReactPlayer from "react-player";
 
 import actions from "../actions";
 
@@ -11,42 +9,26 @@ import { getMovies } from "../reducers/movies";
 import Carousel from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
 
-import api from "../utils/api";
-
 const IMG_PATH = "https://image.tmdb.org/t/p/w154";
-
 const CATEGORIES = {
   popular: "Popular movies",
 };
 
 class Movies extends Component {
-  // renderMovie() {
-  //   return (
-
-  //   )
-  // }
-
-  constructor(props) {
-    super(props);
-    // this.state = {url: ''}
-  }
-
   componentDidMount() {
     const { category } = this.props;
-
     this.props.fetchMovies(category);
   }
 
   renderMovies() {
-    // const { movies } = this.props;
-
-    //!if ends with null remove
-    // https://image.tmdb.org/t/p/w154null
-    //https://image.tmdb.org/t/p/w154null
-
     const { movies, category } = this.props;
 
     return movies.map((movie, i) => {
+      // !comment
+      if (/null$/.test(movie.poster_path)) {
+        return null;
+      }
+
       return (
         <Link to={`/movies/${category}/${movie.urlTitle}`}>
           <img
@@ -60,8 +42,6 @@ class Movies extends Component {
   }
 
   render() {
-    // console.log("Carousel -> render -> movies", movies)
-
     const { movies, category } = this.props;
 
     //! add loading

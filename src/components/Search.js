@@ -1,27 +1,9 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-
-import ReactPlayer from "react-player";
 
 import actions from "../actions";
 
-import { getMovie } from "../reducers/movies";
-
-import Carousel from "@brainhubeu/react-carousel";
-import "@brainhubeu/react-carousel/lib/style.css";
-
-import api from "../utils/api";
-
-const IMG_PATH = "https://image.tmdb.org/t/p/w154";
-
 class Search extends Component {
-  // renderMovie() {
-  //   return (
-
-  //   )
-  // }
-
   constructor(props) {
     super(props);
     this.state = { input: "" };
@@ -36,8 +18,6 @@ class Search extends Component {
   }
 
   render() {
-    // console.log("Carousel -> render -> movies", movies)
-
     const { input } = this.state;
 
     return (
@@ -56,16 +36,6 @@ class Search extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const { movieName } = ownProps.match.params;
-
-  return {
-    // movie: getMovie(state, movieName),
-  };
-};
-
 export default connect(null, {
   fetchSearch: actions.fetchSearch,
 })(Search);
-
-// export default Carousel;

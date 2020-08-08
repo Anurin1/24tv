@@ -2,9 +2,21 @@ import api from "../utils/api";
 import config from "../config/config";
 
 import { addAlert } from "./alerts";
+import { saveData, loadData } from "../utils/storage";
 
 export function fetchMovies(category) {
   return async dispatch => {
+
+    const movies = loadData();
+    if (movies) {
+      console.log("herrrrrrreee")
+      for (const category in movies) {
+        dispatch({ type: "LOAD_MOVIES", movies: movies[category], category });
+      }
+      return;
+    }
+
+
     switch (category) {
       case "popular":
         try {
@@ -23,8 +35,10 @@ export function fetchMovies(category) {
 }
 
 export function addMovies(movies, category) {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch({ type: "ADD_MOVIES", movies, category });
+
+    saveData(getState());
   };
 }
 

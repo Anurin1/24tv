@@ -3,7 +3,7 @@ const initialState = {
     popular: [],
     search: null,
   },
-  
+
   selectedMovie: null,
 };
 
@@ -12,6 +12,7 @@ export default function (state = initialState, action) {
     case "ADD_MOVIES": {
       const { movies, category } = action;
 
+      //!comments
       // Sorts movies by popularity.
       movies.sort((a, b) => b.popularity - a.popularity);
 
@@ -20,54 +21,51 @@ export default function (state = initialState, action) {
         return {
           ...movie,
           urlTitle: getURLTitle(movie.title),
-        }
-      })
+        };
+      });
 
       return {
         ...state,
         category: {
           ...state.category,
           [category]: updated,
-        }
+        },
       };
     }
-    case "ADD_SELECTED_MOVIE": {
-      const { movie } = action;
-
+    case "LOAD_MOVIES": {
+      const { movies, category } = action;
 
       return {
         ...state,
-        selectedMovie: movie
+        category: {
+          ...state.category,
+          [category]: movies,
+        },
       };
     }
 
     case "ADD_SEARCH": {
       const { movies } = action;
-      console.log("movies", movies)
-  
+
       const updated = movies.map(movie => {
         return {
           ...movie,
           urlTitle: getURLTitle(movie.title),
-        }
-      })
-
+        };
+      });
 
       return {
         ...state,
         category: {
           ...state.category,
           search: updated,
-        }
+        },
       };
     }
-  
 
     default:
       return state;
   }
-
-  
 }
 
 // -- Selectors
@@ -75,12 +73,12 @@ export function getMovies(state, category) {
   return state.movies.category[category];
 }
 
-export function getSearch(state) {
-  return state.movies.category.search;
+export function getAllMovies(state) {
+  return state.movies.category;
 }
 
-export function getSelectedMovie(state, category, movieName) {
-  return state.movies.selectedMovie;
+export function getSearch(state) {
+  return state.movies.category.search;
 }
 
 function sortByPopularity(movies) {
@@ -90,15 +88,15 @@ function sortByPopularity(movies) {
   return sorted;
 }
 
-// function getURLTitle(movie) {
-//   movie.urlTitle = movie.title.toLowerCase().replace(/\s/g, "-");
-// }
-
 export function getMovie(state, category, movieName) {
-  return state.movies.category[category].find(movie => movie.urlTitle === movieName);
+  return state.movies.category[category].find(
+    movie => movie.urlTitle === movieName
+  );
 }
 
-
 export function getURLTitle(name) {
-  return name.toLowerCase().replace(/[.:?"'!]/g, "").replace(/\s/g, "-")
+  return name
+    .toLowerCase()
+    .replace(/[.:?"'!]/g, "")
+    .replace(/\s/g, "-");
 }
