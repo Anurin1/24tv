@@ -25,7 +25,7 @@ class Movies extends Component {
     const { movies } = this.props;
 
     return movies.map((movie, i) => {
-      // Doesn't show movie if it doesn't have a poster image.
+      // Doesn't show movie if the movie doesn't have a poster image.
       if (!movie.poster_path) {
         return null;
       }

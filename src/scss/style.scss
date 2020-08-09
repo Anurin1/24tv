@@ -17,15 +17,6 @@
 @import "./elements/placeholder";
 @import "./elements/text";
 
-@import "./elements/carousel";
-
-//! general rules:
-// -add default values
-// -have na main element vzdy class
-// <form class="form">
-// sam od sebe by nemel mit element vnejsi margin
-// posledni item elementu zadny bottom margin
-
 * {
   box-sizing: border-box;
   margin: 0;
