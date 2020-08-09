@@ -21,15 +21,15 @@ class Search extends Component {
     const { input } = this.state;
 
     return (
-      <div>
+      <div className="search">
         <h2>Search</h2>
-        <form>
+        <form className="form">
           <input
             value={input}
             onChange={e => this.setState({ input: e.target.value })}
             placeholder={"Find your favorite movie"}
           />
-          <button onClick={e => this.handleSearchClick(e)}>Search</button>
+          <button className="btn" onClick={e => this.handleSearchClick(e)}>Search</button>
         </form>
       </div>
     );

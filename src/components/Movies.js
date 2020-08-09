@@ -12,6 +12,7 @@ import "@brainhubeu/react-carousel/lib/style.css";
 const IMG_PATH = "https://image.tmdb.org/t/p/w154";
 const CATEGORIES = {
   popular: "Popular movies",
+  search: "Search results",
 };
 
 class Movies extends Component {
@@ -54,16 +55,19 @@ class Movies extends Component {
     }
 
     return (
-      <div>
+      <div >
         <h2>{CATEGORIES[category]}</h2>
-        <Carousel
-          slidesPerPage={8}
-          slidesPerScroll={1}
-          offset={30}
-          itemWidth={154}
-        >
-          {this.renderMovies()}
-        </Carousel>
+        <div className="movies">
+          <Carousel
+            slidesPerPage={10}
+            slidesPerScroll={1}
+            offset={30}
+            itemWidth={154}
+            arrows
+          >
+            {this.renderMovies()}
+          </Carousel>
+        </div>
       </div>
     );
   }

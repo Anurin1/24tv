@@ -39,12 +39,12 @@ class VideoPlayer extends Component {
     }
 
     return (
-      <div>
+      <div className="video">
         <h3>{movie.title}</h3>
         <ReactPlayer
           url={`https://www.youtube.com/watch?v=${url}`}
-          width={"100vw"}
-          height={"100vh"}
+          width={"100%"}
+          height={"100%"}
           playing={true}
           // controls={false}
           muted={true}

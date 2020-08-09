@@ -10,8 +10,9 @@ const Landing = props => {
   const { searchResults } = props;
 
   return (
-    <div>
-      <Movies category={"popular"} />
+    <div className="container">
+      <h1>24tv</h1>
+      <Movies category={"popular"}/>
       <Search />
       {searchResults ? <Movies category={"search"} /> : null}
     </div>
