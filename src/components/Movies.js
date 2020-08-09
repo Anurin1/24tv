@@ -22,52 +22,61 @@ class Movies extends Component {
   }
 
   renderMovies() {
-    const { movies, category } = this.props;
+    const { movies } = this.props;
 
     return movies.map((movie, i) => {
-      // !comment
-      if (/null$/.test(movie.poster_path)) {
+      // Doesn't show movie if it doesn't have a poster image.
+      if (!movie.poster_path) {
         return null;
       }
 
       return (
-        <Link to={`/movies/${category}/${movie.urlTitle}`}>
+        <Link
+          to={`/browse/${movie.id}`}
+          key={`${movie.id}:${movie.original_title}`}
+        >
           <img
             src={IMG_PATH + movie.poster_path}
-            key={movie.original_title}
             className="img-movie"
+            alt={movie.original_title}
           />
         </Link>
       );
     });
   }
 
+  renderLoadingState() {
+    return <div className="movies loading"></div>;
+  }
+
+  renderCarousel() {
+    return (
+      <div className="movies">
+        <Carousel
+          slidesPerPage={10}
+          slidesPerScroll={1}
+          offset={30}
+          itemWidth={154}
+          arrows
+        >
+          {this.renderMovies()}
+        </Carousel>
+      </div>
+    );
+  }
+
   render() {
     const { movies, category } = this.props;
 
-    //! add loading
-    if (movies.length === 0) {
-      return (
-        <div>
-          <p>Nothing found</p>
-        </div>
-      );
+    // Displays 'nothing found' if there is no search match.
+    if (category === "search" && movies.length === 0) {
+      return <h2>Nothing found</h2>;
     }
 
     return (
-      <div >
+      <div>
         <h2>{CATEGORIES[category]}</h2>
-        <div className="movies">
-          <Carousel
-            slidesPerPage={10}
-            slidesPerScroll={1}
-            offset={30}
-            itemWidth={154}
-            arrows
-          >
-            {this.renderMovies()}
-          </Carousel>
-        </div>
+        {movies.length ? this.renderCarousel() : this.renderLoadingState()}
       </div>
     );
   }
@@ -85,5 +94,3 @@ export default connect(mapStateToProps, {
   fetchMovies: actions.fetchMovies,
   addSelectedMovie: actions.addSelectedMovie,
 })(Movies);
-
-// export default Carousel;

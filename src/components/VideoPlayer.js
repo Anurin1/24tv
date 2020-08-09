@@ -1,52 +1,49 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
+import React, { Component } from "react";
 
 import ReactPlayer from "react-player";
 
-import actions from "../actions";
-
-import { getMovie } from "../reducers/movies";
-import { fetchVideoURL } from "../utils/video";
+import { fetchVideoURL } from "../utils/fetch";
 
 class VideoPlayer extends Component {
   constructor(props) {
     super(props);
-    this.state = { url: "" };
+    this.state = { video: null };
   }
 
   componentDidMount() {
-    this.setVideoURL();
+    this.getVideo();
   }
 
-  async setVideoURL() {
-    const { movie } = this.props;
-    const url = await fetchVideoURL(movie);
+  async getVideo() {
+    const { id } = this.props.match.params;
 
-    this.setState({ url });
+    const video = await fetchVideoURL(id);
+    this.setState({ video });
+  }
+
+  renderLoadingState() {
+    return <div className="movie loading"></div>;
   }
 
   render() {
-    const { movie } = this.props;
-    const { url } = this.state;
+    const { video } = this.state;
 
-    //!loading state
-    if (url === '') {
-      return <div></div>;
+    if (!video) {
+      return this.renderLoadingState();
     }
 
-    if (url === null) {
-      return <div>not found</div>
+    if (video.site !== "YouTube") {
+      return <div>Format is not supported</div>;
     }
 
     return (
       <div className="video">
-        <h3>{movie.title}</h3>
+        <h3>{video.name}</h3>
         <ReactPlayer
-          url={`https://www.youtube.com/watch?v=${url}`}
+          url={`https://www.youtube.com/watch?v=${video.key}`}
           width={"100%"}
           height={"100%"}
           playing={true}
-          // controls={false}
           muted={true}
         />
       </div>
@@ -54,17 +51,4 @@ class VideoPlayer extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const { movieName, category } = ownProps.match.params;
-
-  return {
-    category,
-    movie: getMovie(state, category, movieName),
-  };
-};
-
-export default connect(mapStateToProps, {
-  getVideoURL: actions.getVideoURL,
-})(VideoPlayer);
-
-// export default Carousel;
+export default VideoPlayer;

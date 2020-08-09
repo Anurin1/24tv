@@ -1,33 +1,21 @@
-import api from "../utils/api";
-import config from "../config/config";
+
+
 
 import { addAlert } from "./alerts";
-import { saveData, loadData } from "../utils/storage";
+
+import { fetchPopularMovies, fetchSearchResult } from "../utils/fetch";
 
 export function fetchMovies(category) {
   return async dispatch => {
-
-    const movies = loadData();
-    if (movies) {
-      console.log("herrrrrrreee")
-      for (const category in movies) {
-        dispatch({ type: "LOAD_MOVIES", movies: movies[category], category });
-      }
-      return;
-    }
-
-
     switch (category) {
       case "popular":
         try {
-          const res = await api.get(
-            `movie/popular?api_key=${config.movieKey}&language=${config.language}&page=1`
-          );
-          return dispatch(addMovies(res.data.results, category));
+          const movies = await fetchPopularMovies();
+          return dispatch(addMovies(movies, category));
         } catch (err) {
           addAlert(err.message);
         }
-
+        break;
       default:
         return dispatch(addAlert("Something went wrong."));
     }
@@ -37,19 +25,15 @@ export function fetchMovies(category) {
 export function addMovies(movies, category) {
   return async (dispatch, getState) => {
     dispatch({ type: "ADD_MOVIES", movies, category });
-
-    saveData(getState());
   };
 }
 
 export function fetchSearch(input) {
   return async dispatch => {
     try {
-      const res = await api.get(
-        `search/movie?api_key=${config.movieKey}&language=${config.language}&query=${input}&page=1&include_adult=${config.includeAdult}`
-      );
+      const movies = await fetchSearchResult(input);
 
-      dispatch({ type: "ADD_SEARCH", movies: res.data.results });
+      dispatch({ type: "ADD_SEARCH", movies });
     } catch (err) {
       addAlert(err.message);
     }

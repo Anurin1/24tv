@@ -11,13 +11,8 @@ export default () => {
       <Fragment>
         <Switch>
           <Route exact path="/" component={Landing} />
-
-          <Route exact path="/movies/:category/:movieName" component={Movie} />
-          <Route
-            exact
-            path="/movies/:category/:movieName/watch"
-            component={VideoPlayer}
-          />
+          <Route exact path="/browse/:id" component={Movie} />
+          <Route exact path="/watch/:id" component={VideoPlayer} />
         </Switch>
       </Fragment>
     </Router>

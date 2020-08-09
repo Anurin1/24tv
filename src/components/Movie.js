@@ -1,52 +1,59 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import { getMovie } from "../reducers/movies";
+import { fetchMovie } from "../utils/fetch";
 
 const IMG_PATH = "https://image.tmdb.org/t/p/w500";
 
-const Movie = props => {
-  const { movie, category } = props;
-
-  //! pridat
-  if (!movie) {
-    return <div></div>;
+class Movie extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { movie: null };
   }
 
-  const { title, overview, original_language } = movie;
+  componentDidMount() {
+    this.getMovie();
+  }
 
-  return (
-    <div className="movie">
-      <div className="desc">
-        <h2>{title}</h2>
-        <p>{overview}</p>
+  async getMovie() {
+    const { id } = this.props.match.params;
 
-        <h4>Language</h4>
-        <span>{original_language}</span>
+    const movie = await fetchMovie(id);
+    this.setState({ movie });
+  }
 
-        <Link to={`/movies/${category}/${movie.urlTitle}/watch`} className="btn">
-          Watch video
-        </Link>
+  renderLoadingState() {
+    return <div className="movie loading"></div>;
+  }
+
+  render() {
+    const { movie } = this.state;
+
+    if (!movie) {
+      return this.renderLoadingState();
+    }
+
+    const { title, overview } = movie;
+
+    return (
+      <div className="movie">
+        <div className="desc">
+          <h2>{title}</h2>
+          <p>{overview}</p>
+
+          <h4>Language</h4>
+          <span>{movie.original_language}</span>
+
+          <Link to={`/watch/${movie.id}`} className="btn">
+            Watch video
+          </Link>
+        </div>
+        <div className="img">
+          <img src={IMG_PATH + movie.poster_path} alt={movie.original_title} />
+        </div>
       </div>
-      <div className="img">
-        <img
-            src={IMG_PATH + movie.poster_path}
-            
-           
-          />
-      </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
-const mapStateToProps = (state, ownProps) => {
-  const { movieName, category } = ownProps.match.params;
-
-  return {
-    category,
-    movie: getMovie(state, category, movieName),
-  };
-};
-
-export default connect(mapStateToProps)(Movie);
+export default Movie;

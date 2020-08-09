@@ -29,7 +29,9 @@ class Search extends Component {
             onChange={e => this.setState({ input: e.target.value })}
             placeholder={"Find your favorite movie"}
           />
-          <button className="btn" onClick={e => this.handleSearchClick(e)}>Search</button>
+          <button className="btn" onClick={e => this.handleSearchClick(e)}>
+            Search
+          </button>
         </form>
       </div>
     );
