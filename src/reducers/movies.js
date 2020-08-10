@@ -1,7 +1,7 @@
 const initialState = {
   category: {
     popular: [],
-    // Uses empty arrow for no search result.
+    // Uses empty array for no search result.
     search: null,
   },
 };

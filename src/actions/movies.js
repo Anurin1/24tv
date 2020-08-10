@@ -1,6 +1,3 @@
-
-
-
 import { addAlert } from "./alerts";
 
 import { fetchPopularMovies, fetchSearchResult } from "../utils/fetch";
