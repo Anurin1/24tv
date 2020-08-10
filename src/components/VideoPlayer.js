@@ -1,24 +1,46 @@
 import React, { Component } from "react";
 
-import ReactPlayer from "react-player";
+import shaka from "shaka-player";
 
-import { fetchVideoURL } from "../utils/fetch";
+import { fetchMovie } from "../utils/fetch";
+
+const VIDEO_URL =
+  "https://storage.googleapis.com/shaka-demo-assets/bbb-dark-truths-hls/hls.m3u8";
 
 class VideoPlayer extends Component {
   constructor(props) {
     super(props);
-    this.state = { video: null };
+    this.videoRef = React.createRef();
+    this.state = { movie: null };
   }
 
   componentDidMount() {
     this.getVideo();
   }
 
+  componentDidUpdate() {
+    const videoEl = this.videoRef.current;
+    const player = new shaka.Player(videoEl);
+
+    try {
+      this.playVideo(player, videoEl);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
   async getVideo() {
     const { id } = this.props.match.params;
 
-    const video = await fetchVideoURL(id);
-    this.setState({ video });
+    const movie = await fetchMovie(id);
+    this.setState({ movie });
+  }
+
+  async playVideo(player, videoEl) {
+    await player.load(VIDEO_URL);
+
+    videoEl.play();
+    videoEl.requestFullscreen();
   }
 
   renderLoadingState() {
@@ -26,26 +48,16 @@ class VideoPlayer extends Component {
   }
 
   render() {
-    const { video } = this.state;
+    const { movie } = this.state;
 
-    if (!video) {
+    if (!movie) {
       return this.renderLoadingState();
-    }
-
-    if (video.site !== "YouTube") {
-      return <div>Format is not supported</div>;
     }
 
     return (
       <div className="video">
-        <h3>{video.name}</h3>
-        <ReactPlayer
-          url={`https://www.youtube.com/watch?v=${video.key}`}
-          width={"100%"}
-          height={"100%"}
-          playing={true}
-          muted={true}
-        />
+        <h3>{movie.title}</h3>
+        <video ref={this.videoRef} width={"100%"} height={"100%"} controls />
       </div>
     );
   }
